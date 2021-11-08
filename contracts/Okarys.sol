@@ -23,7 +23,7 @@ contract Okarys is ERC165, IERC1155, IERC1155MetadataURI, ERC2981Global, Ownable
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
     // Used as the URI for all tokens by relying on ID substitution
-    string public baseUri;
+    string private baseUri;
 
     event BaseUriUpdated(string newBaseUri);
 
@@ -35,34 +35,17 @@ contract Okarys is ERC165, IERC1155, IERC1155MetadataURI, ERC2981Global, Ownable
         baseUri = _baseUri;
     }
 
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC165, IERC165, ERC2981Global)
-        returns (bool)
-    {
-        return
-            interfaceId == type(IERC1155).interfaceId ||
-            interfaceId == type(IERC1155MetadataURI).interfaceId ||
-            ERC2981Global.supportsInterface(interfaceId) ||
-            super.supportsInterface(interfaceId);
-    }
-
-    function totalSupply(uint256 id) public view returns (uint256) {
-        return _totalSupply[id];
+    /**
+     * @return baseUri
+     * Needs to be concatenated with token ID
+     * E.g. https://token-cdn-domain/314592.json if the client is referring to token ID 314592
+     */
+    function uri(uint256) external view override returns (string memory) {
+        return baseUri;
     }
 
     function exists(uint256 id) external view returns (bool) {
         return totalSupply(id) > 0;
-    }
-
-    /**
-     * @return baseUri + id, with id being an hexadecimal number
-     * E.g. https://token-cdn-domain/000000000000000000000000000000000000000000000000000000000004cce0.json if the client is referring to token ID 314592/0x4CCE0
-     */
-    function uri(uint256 id) external view override returns (string memory) {
-        // Concatenates baseUri + id
-        return string(abi.encodePacked(baseUri, id));
     }
 
     function balanceOf(address account, uint256 id) public view override returns (uint256) {
@@ -92,15 +75,6 @@ contract Okarys is ERC165, IERC1155, IERC1155MetadataURI, ERC2981Global, Ownable
 
         _operatorApprovals[msg.sender][operator] = approved;
         emit ApprovalForAll(msg.sender, operator, approved);
-    }
-
-    function isApprovedForAll(address account, address operator)
-        public
-        view
-        override
-        returns (bool)
-    {
-        return _operatorApprovals[account][operator];
     }
 
     function safeTransferFrom(
@@ -244,6 +218,32 @@ contract Okarys is ERC165, IERC1155, IERC1155MetadataURI, ERC2981Global, Ownable
                 data
             );
         }
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC165, IERC165, ERC2981Global)
+        returns (bool)
+    {
+        return
+            interfaceId == type(IERC1155).interfaceId ||
+            interfaceId == type(IERC1155MetadataURI).interfaceId ||
+            ERC2981Global.supportsInterface(interfaceId) ||
+            super.supportsInterface(interfaceId);
+    }
+
+    function totalSupply(uint256 id) public view returns (uint256) {
+        return _totalSupply[id];
+    }
+
+    function isApprovedForAll(address account, address operator)
+        public
+        view
+        override
+        returns (bool)
+    {
+        return _operatorApprovals[account][operator];
     }
 
     function _doSafeTransferAcceptanceCheck(
