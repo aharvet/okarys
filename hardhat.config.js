@@ -4,9 +4,18 @@ require('@nomiclabs/hardhat-etherscan');
 require('@nomiclabs/hardhat-waffle');
 require('hardhat-gas-reporter');
 require('solidity-coverage');
+require('hardhat-contract-sizer');
 
 module.exports = {
-  solidity: '0.8.10',
+  solidity: {
+    version: '0.8.9',
+    settings: {
+      optimizer: {
+        enabled: false,
+        runs: 999999,
+      },
+    },
+  },
   networks: {
     ropsten: {
       url: process.env.ROPSTEN_URL || '',
@@ -14,7 +23,7 @@ module.exports = {
     },
   },
   gasReporter: {
-    enabled: process.env.REPORT_GAS !== undefined,
+    enabled: false,
     currency: 'USD',
   },
   etherscan: {

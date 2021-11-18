@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.10;
+pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -36,7 +36,7 @@ contract Okarys is ERC1155Supply, ERC2981Global, Ownable {
         uint256 amount,
         bytes memory data
     ) external onlyOwner {
-        require(totalSupply(id) + amount < 150, "OKARYS: Supply of each token is limited to 149");
+        require(totalSupply(id) + amount < 150, "Okary: Supply of each token is limited to 149");
         super._mint(account, id, amount, data);
     }
 
@@ -49,7 +49,7 @@ contract Okarys is ERC1155Supply, ERC2981Global, Ownable {
         for (uint256 i = 0; i < ids.length; ++i) {
             require(
                 totalSupply(ids[i]) + amounts[i] < 150,
-                "OKARYS: Supply of each token is limited to 149"
+                "Okary: Supply of each token is limited to 149"
             );
         }
         super._mintBatch(to, ids, amounts, data);
