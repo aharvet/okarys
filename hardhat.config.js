@@ -11,7 +11,7 @@ module.exports = {
     version: '0.8.9',
     settings: {
       optimizer: {
-        enabled: true,
+        enabled: false,
         runs: 999999,
       },
     },
@@ -23,7 +23,7 @@ module.exports = {
     },
   },
   gasReporter: {
-    enabled: true,
+    enabled: false,
     currency: 'USD',
   },
   etherscan: {

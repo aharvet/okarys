@@ -2,20 +2,23 @@ const { expect } = require('chai');
 const { ethers } = require('hardhat');
 
 describe('Okarys', function () {
-  let owner, user1, user2;
+  let owner, childChainManager, royaltyReceiver, user1, user2;
   let okarys;
-  let royaltyReceiver;
   const royaltyPercentage = 15;
   const baseUri = 'http://base-uri-path.com/';
 
   before(async () => {
-    [owner, royaltyReceiver, user1, user2] = await ethers.getSigners();
-    royaltyReceiver = user1.address;
+    [owner, childChainManager, royaltyReceiver, user1, user2] = await ethers.getSigners();
   });
 
   beforeEach(async () => {
     const Okarys = await ethers.getContractFactory('Okarys');
-    okarys = await Okarys.deploy(baseUri, royaltyReceiver, royaltyPercentage);
+    okarys = await Okarys.deploy(
+      baseUri,
+      royaltyReceiver.address,
+      royaltyPercentage,
+      childChainManager.address,
+    );
   });
 
   describe('Interface Ids', () => {
@@ -138,7 +141,7 @@ describe('Okarys', function () {
     it('should set royalty infos at deployment', async () => {
       const expectRoyaltyAmount = (price * royaltyPercentage) / 100;
       const royaltyInfo = await okarys.royaltyInfo(id, price);
-      expect(royaltyInfo[0]).equal(royaltyReceiver);
+      expect(royaltyInfo[0]).equal(royaltyReceiver.address);
       expect(royaltyInfo[1]).equal(expectRoyaltyAmount);
     });
 

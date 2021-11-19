@@ -2,16 +2,22 @@
 
 pragma solidity 0.8.9;
 
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "./ChildMintableERC1155.sol";
 import "./ERC2981Global.sol";
+import "./polygon/IChildToken.sol";
 
-contract Okarys is ERC1155Supply, ERC2981Global, Ownable {
+contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
     constructor(
-        string memory uri,
-        address royaltyReceiver,
-        uint256 royaltyPercentage
-    ) ERC1155(uri) ERC2981Global(royaltyReceiver, royaltyPercentage) {}
+        string memory _uri,
+        address _royaltyReceiver,
+        uint256 _royaltyPercentage,
+        address _childChainManager
+    )
+        ERC1155(_uri)
+        ChildMintableERC1155(_childChainManager)
+        ERC2981Global(_royaltyReceiver, _royaltyPercentage)
+    {}
 
     function supportsInterface(bytes4 interfaceId)
         public
