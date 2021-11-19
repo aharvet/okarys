@@ -7,9 +7,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ERC2981Global.sol";
 
 contract Okarys is ERC1155Supply, ERC2981Global, Ownable {
-    event RoyaltyReceiverUpdated(address newReceiver);
-    event RoyaltyPercentageUpdated(uint256 newPercentage);
-
     constructor(
         string memory uri,
         address royaltyReceiver,
@@ -27,7 +24,7 @@ contract Okarys is ERC1155Supply, ERC2981Global, Ownable {
     }
 
     function setURI(string calldata uri) external onlyOwner {
-        super._setURI(uri);
+        _setURI(uri);
     }
 
     function mint(
@@ -37,7 +34,7 @@ contract Okarys is ERC1155Supply, ERC2981Global, Ownable {
         bytes memory data
     ) external onlyOwner {
         require(totalSupply(id) + amount < 150, "Okary: Supply of each token is limited to 149");
-        super._mint(account, id, amount, data);
+        _mint(account, id, amount, data);
     }
 
     function mintBatch(
@@ -52,16 +49,14 @@ contract Okarys is ERC1155Supply, ERC2981Global, Ownable {
                 "Okary: Supply of each token is limited to 149"
             );
         }
-        super._mintBatch(to, ids, amounts, data);
+        _mintBatch(to, ids, amounts, data);
     }
 
     function setRoyaltyReceiver(address receiver) external onlyOwner {
-        royaltyReceiver = receiver;
-        emit RoyaltyReceiverUpdated(receiver);
+        _setRoyaltyReceiver(receiver);
     }
 
     function setRoyaltyPercentage(uint256 percentage) external onlyOwner {
-        royaltyPercentage = percentage;
-        emit RoyaltyPercentageUpdated(percentage);
+        _setRoyaltyPercentage(percentage);
     }
 }

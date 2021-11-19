@@ -141,16 +141,33 @@ describe('Okarys', function () {
       expect(royaltyInfo[0]).equal(royaltyReceiver);
       expect(royaltyInfo[1]).equal(expectRoyaltyAmount);
     });
+
     it('should update royalty receiver', async () => {
-      await okarys.setRoyaltyReceiver(user2.address);
+      await expect(okarys.setRoyaltyReceiver(user2.address))
+        .to.emit(okarys, 'RoyaltyReceiverUpdated')
+        .withArgs(user2.address);
       expect((await okarys.royaltyInfo(id, price))[0]).equal(user2.address);
+    });
+
+    it('should not update royalty receiver if not owner', async () => {
+      await expect(okarys.connect(user1).setRoyaltyReceiver(user2.address)).to.be.revertedWith(
+        'Ownable: caller is not the owner',
+      );
     });
 
     it('should update royalty percentage', async () => {
       const newRoyaltyPercentage = 30;
       const expectRoyaltyAmount = (price * newRoyaltyPercentage) / 100;
-      await okarys.setRoyaltyPercentage(newRoyaltyPercentage);
+      await expect(okarys.setRoyaltyPercentage(newRoyaltyPercentage))
+        .to.emit(okarys, 'RoyaltyPercentageUpdated')
+        .withArgs(newRoyaltyPercentage);
       expect((await okarys.royaltyInfo(id, price))[1]).equal(expectRoyaltyAmount);
+    });
+
+    it('should not update royalty percentage if not owner', async () => {
+      await expect(okarys.connect(user1).setRoyaltyPercentage(40)).to.be.revertedWith(
+        'Ownable: caller is not the owner',
+      );
     });
   });
 });
