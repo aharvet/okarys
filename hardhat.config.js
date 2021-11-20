@@ -8,7 +8,7 @@ require('hardhat-contract-sizer');
 
 module.exports = {
   solidity: {
-    version: '0.8.9',
+    version: '0.8.10',
     settings: {
       optimizer: {
         enabled: false,
@@ -17,8 +17,12 @@ module.exports = {
     },
   },
   networks: {
-    ropsten: {
-      url: process.env.ROPSTEN_URL || '',
+    polygon: {
+      url: process.env.POLYGON_ENDPOINT_URL,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
+    mumbai: {
+      url: process.env.MUMBAI_ENDPOINT_URL,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
   },
@@ -27,6 +31,6 @@ module.exports = {
     currency: 'USD',
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY,
+    apiKey: process.env.POLYGONSCAN_API_KEY,
   },
 };
