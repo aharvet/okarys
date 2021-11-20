@@ -175,7 +175,7 @@ describe('Okarys', function () {
     });
   });
 
-  describe.only('Polygon bridge', () => {
+  describe('Polygon bridge', () => {
     const firstTokenId = 3;
     const secondTokenId = 64;
     const firstAmount = 1;
@@ -203,6 +203,15 @@ describe('Okarys', function () {
         await expect(okarys.connect(user2).deposit(user1.address, depositData)).to.be.revertedWith(
           'Okarys: caller is not the depositor',
         );
+      });
+
+      it('should not deposit tokens if user is zero address', async () => {
+        const depositData = constructERC1155DepositData([firstTokenId], [firstAmount]);
+        await expect(
+          okarys
+            .connect(childChainManager)
+            .deposit('0x0000000000000000000000000000000000000000', depositData),
+        ).to.be.revertedWith('ChildMintableERC1155: invalid deposit user');
       });
     });
 

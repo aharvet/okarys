@@ -9,14 +9,14 @@ import "./polygon/IChildToken.sol";
 
 contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
     constructor(
-        string memory _uri,
-        address _royaltyReceiver,
-        uint256 _royaltyPercentage,
-        address _childChainManager
+        string memory uri,
+        address royaltyReceiver,
+        uint256 royaltyPercentage,
+        address childChainManager
     )
-        ERC1155(_uri)
-        ChildMintableERC1155(_childChainManager)
-        ERC2981Global(_royaltyReceiver, _royaltyPercentage)
+        ERC1155(uri)
+        ChildMintableERC1155(childChainManager)
+        ERC2981Global(royaltyReceiver, royaltyPercentage)
     {}
 
     function supportsInterface(bytes4 interfaceId)
