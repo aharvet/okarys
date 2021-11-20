@@ -9,8 +9,8 @@ abstract contract ChildMintableERC1155 is IChildToken, ERC1155Supply {
     // Polygon bridge
     address private childChainManager;
 
-    modifier onlyChildChainManager() {
-        require(msg.sender == childChainManager, "Okarys: access denied");
+    modifier onlyDepositor() {
+        require(msg.sender == childChainManager, "Okarys: caller is not the depositor");
         _;
     }
 
@@ -26,11 +26,7 @@ abstract contract ChildMintableERC1155 is IChildToken, ERC1155Supply {
      * @param user user address for whom deposit is being done
      * @param depositData abi encoded ids array and amounts array
      */
-    function deposit(address user, bytes calldata depositData)
-        external
-        override
-        onlyChildChainManager
-    {
+    function deposit(address user, bytes calldata depositData) external override onlyDepositor {
         (uint256[] memory ids, uint256[] memory amounts, bytes memory data) = abi.decode(
             depositData,
             (uint256[], uint256[], bytes)

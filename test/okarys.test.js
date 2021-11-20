@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
+const { constructERC1155DepositData } = require('./utils');
 
 describe('Okarys', function () {
   let owner, childChainManager, royaltyReceiver, user1, user2;
@@ -171,6 +172,81 @@ describe('Okarys', function () {
       await expect(okarys.connect(user1).setRoyaltyPercentage(40)).to.be.revertedWith(
         'Ownable: caller is not the owner',
       );
+    });
+  });
+
+  describe.only('Polygon bridge', () => {
+    const firstTokenId = 3;
+    const secondTokenId = 64;
+    const firstAmount = 1;
+    const secondAmount = 8;
+
+    describe('Deposit', () => {
+      it('should deposit one token', async () => {
+        const depositData = constructERC1155DepositData([firstTokenId], [firstAmount]);
+        await okarys.connect(childChainManager).deposit(user1.address, depositData);
+        expect(await okarys.balanceOf(user1.address, firstTokenId)).equal(firstAmount);
+      });
+
+      it('should deposit several tokens', async () => {
+        const depositData = constructERC1155DepositData(
+          [firstTokenId, secondTokenId],
+          [firstAmount, secondAmount],
+        );
+        await okarys.connect(childChainManager).deposit(user1.address, depositData);
+        expect(await okarys.balanceOf(user1.address, firstTokenId)).equal(firstAmount);
+        expect(await okarys.balanceOf(user1.address, secondTokenId)).equal(secondAmount);
+      });
+
+      it('should not deposit tokens if not depositor', async () => {
+        const depositData = constructERC1155DepositData([firstTokenId], [firstAmount]);
+        await expect(okarys.connect(user2).deposit(user1.address, depositData)).to.be.revertedWith(
+          'Okarys: caller is not the depositor',
+        );
+      });
+    });
+
+    describe('Withdraw', () => {
+      beforeEach(async () => {
+        await okarys.mintBatch(
+          user1.address,
+          [firstTokenId, secondTokenId],
+          [firstAmount, secondAmount],
+          '0x',
+        );
+      });
+
+      it('should withdraw one token', async () => {
+        const amountWithdrew = 1;
+        await okarys.connect(user1).withdrawSingle(secondTokenId, amountWithdrew);
+        expect(await okarys.balanceOf(user1.address, secondTokenId)).equal(
+          secondAmount - amountWithdrew,
+        );
+      });
+
+      it('should withdraw severals tokens', async () => {
+        const firstAmountWithdrew = 1;
+        const secondAmountWithdrew = 4;
+        await okarys
+          .connect(user1)
+          .withdrawBatch(
+            [firstTokenId, secondTokenId],
+            [firstAmountWithdrew, secondAmountWithdrew],
+          );
+        expect(await okarys.balanceOf(user1.address, firstTokenId)).equal(
+          firstAmount - firstAmountWithdrew,
+        );
+        expect(await okarys.balanceOf(user1.address, secondTokenId)).equal(
+          secondAmount - secondAmountWithdrew,
+        );
+      });
+
+      it('should not withdraw more tokens than held', async () => {
+        const amountWithdrew = 4;
+        await expect(
+          okarys.connect(user1).withdrawSingle(firstTokenId, amountWithdrew),
+        ).to.be.revertedWith('ERC1155: burn amount exceeds balance');
+      });
     });
   });
 });
