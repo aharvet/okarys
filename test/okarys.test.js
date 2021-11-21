@@ -254,7 +254,9 @@ describe('Okarys', function () {
         const amountWithdrew = 4;
         await expect(
           okarys.connect(user1).withdrawSingle(firstTokenId, amountWithdrew),
-        ).to.be.revertedWith('ERC1155: burn amount exceeds balance');
+        ).to.be.revertedWith(
+          'VM Exception while processing transaction: reverted with panic code 0x11 (Arithmetic operation underflowed or overflowed outside of an unchecked block)',
+        );
       });
     });
   });
