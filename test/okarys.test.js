@@ -41,13 +41,20 @@ describe('Okarys', function () {
 
   describe('URI', () => {
     it('should set URI at deployment', async function () {
-      expect(await okarys.uri(0)).equal(baseUri);
+      const id = '0';
+      expect(await okarys.uri(id)).equal(baseUri + id);
+    });
+
+    it('should return correct uri', async () => {
+      const id = '325';
+      expect(await okarys.uri(325)).equal(baseUri + id);
     });
 
     it('should update URI', async function () {
       const newUri = 'newURI';
+      const id = '3';
       await okarys.setURI(newUri);
-      expect(await okarys.uri(0)).equal(newUri);
+      expect(await okarys.uri(id)).equal(newUri + id);
     });
 
     it('should not update URI if not owner', async function () {

@@ -5,6 +5,9 @@ pragma solidity ^0.8.0;
 import "./polygon/IChildToken.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 
+/**
+ * @notice Add Polygon bridge compatibility to ERC1155
+ */
 abstract contract ChildMintableERC1155 is IChildToken, ERC1155Supply {
     // Polygon bridge
     address private childChainManager;

@@ -6,31 +6,24 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ChildMintableERC1155.sol";
 import "./ERC2981Global.sol";
 import "./polygon/IChildToken.sol";
+import "./utils/Strings.sol";
 
 contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
+    using Strings for uint256;
+
     constructor(
-        string memory uri,
+        string memory _uri,
         address royaltyReceiver,
         uint256 royaltyPercentage,
         address childChainManager
     )
-        ERC1155(uri)
+        ERC1155(_uri)
         ChildMintableERC1155(childChainManager)
         ERC2981Global(royaltyReceiver, royaltyPercentage)
     {}
 
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC1155, ERC2981Global)
-        returns (bool)
-    {
-        return
-            ERC1155.supportsInterface(interfaceId) || ERC2981Global.supportsInterface(interfaceId);
-    }
-
-    function setURI(string calldata uri) external onlyOwner {
-        _setURI(uri);
+    function uri(uint256 id) public view override returns (string memory) {
+        return string(abi.encodePacked(super.uri(id), id.uint2str()));
     }
 
     function mint(
@@ -64,5 +57,19 @@ contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
 
     function setRoyaltyPercentage(uint256 percentage) external onlyOwner {
         _setRoyaltyPercentage(percentage);
+    }
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC1155, ERC2981Global)
+        returns (bool)
+    {
+        return
+            ERC1155.supportsInterface(interfaceId) || ERC2981Global.supportsInterface(interfaceId);
+    }
+
+    function setURI(string calldata _uri) external onlyOwner {
+        _setURI(_uri);
     }
 }

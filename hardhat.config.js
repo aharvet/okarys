@@ -11,7 +11,7 @@ module.exports = {
     version: '0.8.10',
     settings: {
       optimizer: {
-        enabled: false,
+        enabled: true,
         runs: 999999,
       },
     },
@@ -25,9 +25,13 @@ module.exports = {
       url: process.env.MUMBAI_ENDPOINT_URL,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    mumbai: {
+      url: process.env.RINKEBY_ENDPOINT_URL,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
   },
   gasReporter: {
-    enabled: false,
+    enabled: true,
     currency: 'USD',
   },
   etherscan: {
