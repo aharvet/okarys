@@ -46,3 +46,9 @@ npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
 ```
 npx hardhat verify --network NETWORK DEPLOYED_CONTRACT_ADDRESS "Constructor argument 1"
 ```
+
+## Flatten contract
+
+```
+npx hardhat flatten > flatten/Okarys-flat.sol
+```
