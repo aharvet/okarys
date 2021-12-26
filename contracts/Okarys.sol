@@ -3,10 +3,10 @@
 pragma solidity 0.8.10;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "./ChildMintableERC1155.sol";
 import "./ERC2981Global.sol";
 import "./polygon/IChildToken.sol";
-import "./utils/Strings.sol";
 
 contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
     using Strings for uint256;
@@ -23,7 +23,7 @@ contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
     {}
 
     function uri(uint256 id) public view override returns (string memory) {
-        return string(abi.encodePacked(super.uri(id), id.uint2str()));
+        return string(abi.encodePacked(super.uri(id), id.toString()));
     }
 
     function mint(
