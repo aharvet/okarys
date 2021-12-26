@@ -42,19 +42,19 @@ describe('Okarys', function () {
   describe('URI', () => {
     it('should set URI at deployment', async function () {
       const id = '0';
-      expect(await okarys.uri(id)).equal(baseUri + id);
+      expect(await okarys.uri(id)).equal(baseUri + id + '.json');
     });
 
     it('should return correct uri', async () => {
       const id = '325';
-      expect(await okarys.uri(325)).equal(baseUri + id);
+      expect(await okarys.uri(325)).equal(baseUri + id + '.json');
     });
 
     it('should update URI', async function () {
       const newUri = 'newURI';
       const id = '3';
       await okarys.setURI(newUri);
-      expect(await okarys.uri(id)).equal(newUri + id);
+      expect(await okarys.uri(id)).equal(newUri + id + '.json');
     });
 
     it('should not update URI if not owner', async function () {

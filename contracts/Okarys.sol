@@ -23,7 +23,7 @@ contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
     {}
 
     function uri(uint256 id) public view override returns (string memory) {
-        return string(abi.encodePacked(super.uri(id), id.toString()));
+        return string(abi.encodePacked(super.uri(id), id.toString(), ".json"));
     }
 
     function mint(
