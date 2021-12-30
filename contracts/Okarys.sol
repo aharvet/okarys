@@ -11,7 +11,10 @@ import "./polygon/IChildToken.sol";
 contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
     using Strings for uint256;
 
+    string public name;
+
     constructor(
+        string memory _name,
         string memory _uri,
         address royaltyReceiver,
         uint256 royaltyPercentage,
@@ -20,7 +23,9 @@ contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
         ERC1155(_uri)
         ChildMintableERC1155(childChainManager)
         ERC2981Global(royaltyReceiver, royaltyPercentage)
-    {}
+    {
+        name = _name;
+    }
 
     function uri(uint256 id) public view override returns (string memory) {
         return string(abi.encodePacked(super.uri(id), id.toString(), ".json"));

@@ -25,13 +25,9 @@ module.exports = {
       url: process.env.MUMBAI_ENDPOINT_URL,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
-    mumbai: {
-      url: process.env.RINKEBY_ENDPOINT_URL,
-      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
-    },
   },
   gasReporter: {
-    enabled: true,
+    enabled: false,
     currency: 'USD',
   },
   etherscan: {

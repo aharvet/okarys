@@ -6,6 +6,7 @@ const mumbaiChildChainManagerProxyAddress = '0xb5505a6d998549090530911180f38aC51
 async function main() {
   const Okarys = await hre.ethers.getContractFactory('Okarys');
   const okarys = await Okarys.deploy(
+    'Okarys',
     'http://base-uri-path.com/',
     '0x0000000000000000000000000000000000000000',
     0,
