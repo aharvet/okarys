@@ -11,7 +11,7 @@ import "./polygon/IChildToken.sol";
 contract Okarys is ChildMintableERC1155, ERC2981Global, Ownable {
     using Strings for uint256;
 
-    string public name;
+    string public immutable name;
 
     constructor(
         string memory _name,
