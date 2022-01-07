@@ -8,13 +8,26 @@ require('hardhat-contract-sizer');
 
 module.exports = {
   solidity: {
-    version: '0.8.10',
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 999999,
+    compilers: [
+      {
+        version: '0.8.10',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 999999,
+          },
+        },
       },
-    },
+      {
+        version: '0.6.6',
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 999999,
+          },
+        },
+      },
+    ],
   },
   networks: {
     polygon: {
@@ -25,12 +38,16 @@ module.exports = {
       url: process.env.MUMBAI_ENDPOINT_URL,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    goerli: {
+      url: process.env.GOERLI_ENDPOINT_URL,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
   },
   gasReporter: {
     enabled: false,
     currency: 'USD',
   },
   etherscan: {
-    apiKey: process.env.POLYGONSCAN_API_KEY,
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
 };

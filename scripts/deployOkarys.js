@@ -7,7 +7,7 @@ async function main() {
   const Okarys = await hre.ethers.getContractFactory('Okarys');
   const okarys = await Okarys.deploy(
     'Okarys',
-    'http://base-uri-path.com/',
+    'https://ipfs.io/ipfs/QmPs2SxSoYgrpt8WGgkM8R8vojsXA9e6Gp5JWJ81bcMKw4/',
     '0x0000000000000000000000000000000000000000',
     0,
     mumbaiChildChainManagerProxyAddress,
@@ -16,6 +16,11 @@ async function main() {
   await okarys.deployed();
 
   console.log('Okarys deployed to:', okarys.address);
+
+  if (hre.network.name === 'mumbai') {
+    await okarys.mint('0xC34B89d8C1ca7674e89AB5a9aC31F7Ceec31aEB5', 1, 3, '0x');
+    console.log('Mint done');
+  }
 }
 
 main().catch((error) => {
