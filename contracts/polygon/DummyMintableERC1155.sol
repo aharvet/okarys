@@ -1821,9 +1821,6 @@ contract DummyMintableERC1155 is
 
     constructor(string memory uri_, address mintableAssetProxy) public ERC1155(uri_) {
         _setupContractId("DummyMintableERC1155");
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setupRole(PREDICATE_ROLE, _msgSender());
-        _setupRole(PREDICATE_ROLE, _msgSender());
         _setupRole(PREDICATE_ROLE, mintableAssetProxy);
 
         _initializeEIP712(uri_);
