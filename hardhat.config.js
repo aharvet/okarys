@@ -38,6 +38,10 @@ module.exports = {
       url: process.env.MUMBAI_ENDPOINT_URL,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
+    mainnet: {
+      url: process.env.MAINNET_ENDPOINT_URL,
+      accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
+    },
     goerli: {
       url: process.env.GOERLI_ENDPOINT_URL,
       accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],

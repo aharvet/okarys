@@ -1,50 +1,47 @@
-# Advanced Sample Hardhat Project
+# Okarys
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+Okarys is an EIP 1155 collectibles collection, which restricts the mint of each id to 149 pieces for compliance matter.
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+It is compatible with EIP 2981 for on chain royalties ([see EIP 2981](https://eips.ethereum.org/EIPS/eip-2981)) and with the polygon bridge.
 
-Try running some of the following tasks:
+It is a so called mintable contract. Meaning that the original collectibles are minted on the Polygon L2, and can then be bridged to mainnet. ([see Polygon docs](https://docs.polygon.technology/docs/develop/ethereum-polygon/mintable-assets))
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
+## Instalation
+
+Run
+
+```
+npm i
+```
+
+Copy `.env.example`, rename it to `.env` and fill the fields.
+
+## Test
+
+```
 npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.js
-node scripts/deploy.js
-npx eslint '**/*.js'
-npx eslint '**/*.js' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
 ```
 
-# Etherscan verification
+## Deployment
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-hardhat run --network ropsten scripts/deploy.js
-```
-
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
-
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
-```
-
-## Verify contrat
+Main Polygon contract:
 
 ```
-npx hardhat verify --network NETWORK DEPLOYED_CONTRACT_ADDRESS "Constructor argument 1"
+npx hardhat run scripts/deployOkarys.js --network <polygon | mumbai>
+```
+
+Mainnet child token for bridge:
+
+```
+npx hardhat run scripts/deployRootToken.js --network <mainnet | goerli>
+```
+
+# Etherscan/Polygonscan verification
+
+Copy the deployment address and paste it in to replace DEPLOYED_CONTRACT_ADDRESS in this command:
+
+```
+npx hardhat verify --network <TARGETED_NETWORK> <DEPLOYED_CONTRACT_ADDRESS> "constructor argument 1" "constructor argument 2" "constructor argument 3" "constructor argument 4" "constructor argument 5"
 ```
 
 ## Flatten contract
