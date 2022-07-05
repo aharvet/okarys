@@ -6,6 +6,18 @@ It is compatible with EIP 2981 for on chain royalties ([see EIP 2981](https://ei
 
 It is a so called mintable contract. Meaning that the original collectibles are minted on the Polygon L2, and can then be bridged to mainnet. ([see Polygon docs](https://docs.polygon.technology/docs/develop/ethereum-polygon/mintable-assets))
 
+## Constructor
+
+`string _name` : name of the collection
+
+`string _uri` : uri of the collection
+
+`address royaltyReceiver` : address that will receive the royalties
+
+`uint256 royaltyPercentage` : percentage of the price to be royalty
+
+`address childChainManager` : address of Polygon's child manager contract (docs above)
+
 ## Instalation
 
 Run
